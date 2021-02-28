@@ -132,8 +132,8 @@ ovpnConfig: {}
 
 ## Use rtorrentConfig to provide a custom rtorrent.rc
 # Defaults to https://raw.githubusercontent.com/binhex/arch-rtorrentvpn/master/config/nobody/rtorrent/config/rtorrent.rc
-#rtorrentConfig:
-#  rtorrent.rc: |
-#    # This is an example resource file for rTorrent. Copy to
-#    # ~/.rtorrent.rc and enable/modify the options as needed. Remember to
-#    # uncomment the options you wish to enable.
+# rtorrentConfig:
+#   rtorrent.rc: |
+#     # This is an example resource file for rTorrent. Copy to
+#     # ~/.rtorrent.rc and enable/modify the options as needed. Remember to
+#     # uncomment the options you wish to enable.
