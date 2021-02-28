@@ -1,4 +1,3 @@
----
 {{- if .Values.service.tcp }}
 {{- if .Values.service.tcp.ports }}
 apiVersion: v1
