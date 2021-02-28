@@ -25,5 +25,3 @@ jobs:
 
       - name: Run chart-testing (lint)
         run: ct lint --target-branch main
-
-
