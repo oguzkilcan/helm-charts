@@ -1,0 +1,25 @@
+{{- if .Values.service.udp }}
+{{- if .Values.service.udp.ports }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "plex.fullname" . }}-lb-udp
+  labels:
+    {{- include "plex.labels" . | nindent 4 }}
+  {{- with .Values.service.udp.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  type: {{ .Values.service.udp.type }}
+  ports:
+    {{- range .Values.service.udp.ports }}
+    - name: plex-{{ .port }}
+      port: {{ .port }}
+      targetPort: {{ .containerPort }}
+      protocol: UDP
+    {{- end }}
+  selector:
+    {{- include "plex.selectorLabels" . | nindent 4 }}
+{{- end }}
+{{- end }}

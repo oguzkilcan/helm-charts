@@ -1,0 +1,12 @@
+apiVersion: v2
+type: application
+name: plex
+version: 1.1.4
+appVersion: 1.21.4.4079-1b7748a7b
+description: Streaming app for movies, TV, music, web shows and podcasts
+home: https://plex.tv/
+icon: https://cdn.icon-icons.com/icons2/2108/PNG/512/plex_icon_130854.png
+sources:
+  - https://hub.docker.com/r/plexinc/pms-docker/
+maintainers:
+  - name: oguzkilcan
