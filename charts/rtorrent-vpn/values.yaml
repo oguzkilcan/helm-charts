@@ -1,0 +1,139 @@
+# Default values for rtorrent-vpn.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+revisionHistoryLimit: 2
+
+image:
+  repository: binhex/arch-rtorrentvpn
+  pullPolicy: IfNotPresent
+  #  tag:
+
+initContainerImage:
+  repository: busybox
+  tag: 1.32.1
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name:
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: false
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: chart-example.local
+      paths: []
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+dnsConfig: {}
+#  nameservers:
+#    - 1.1.1.1
+#    - 1.0.0.1
+
+terminationGracePeriodSeconds: 30
+
+persistence:
+  data:
+    enabled: false
+    accessModes:
+      - ReadWriteOnce
+    size: 8Gi
+    annotations: {}
+    # existingClaim:
+    # storageClass: "-"
+  config:
+    enabled: false
+    accessModes:
+      - ReadWriteOnce
+    size: 8Gi
+    annotations: {}
+    # existingClaim:
+    # storageClass: "-"
+
+extraEnvConfigMap:
+  VPN_ENABLED: "no"
+  ENABLE_RPC2_AUTH: "no"
+  ENABLE_WEBUI_AUTH: "no"
+
+extraEnvSecret: {}
+
+privoxy:
+  enabled: false
+  service:
+    type: LoadBalancer
+    port: 8118
+    annotations: {}
+
+## Add custom scripts as configMap
+customScriptsConfigMap: {}
+#  name: custom-script
+#  data:
+#    script.sh: |
+#      #!/bin/bash
+#      echo "Custom script"
+
+## Add custom volumes
+customVolumes: |
+#  - name: custom-script
+#    configMap:
+#      name: custom-script
+#      items:
+#        - key: script.sh
+#          path: script.sh
+
+## Add custom volumesMounts
+customVolumeMounts: |
+#  - name: custom-script
+#    mountPath: "/scripts/script.sh"
+#    subPath: script.sh
+
+## Use this to create a secret with provided fields to configure OpenVPN.
+## Each field will be mounted as a file where filename will be field itself.
+## Encode file content to base64 before adding here.
+## This part is mandatory if VPN is enabled.
+## A valid field name must consist of alphanumeric characters, '-', '_' or '.'
+## (regex used for validation is '[-._a-zA-Z0-9]+')
+ovpnConfig: {}
+#  custom.ovpn: "Y2xpZW50CmRldiB0dW4KcHJvdG8gdWRwCnJlbW90ZSByby5wcml2YXRlaW50ZXJuZXR....."
+
+## Use rtorrentConfig to provide a custom rtorrent.rc
+# Defaults to https://raw.githubusercontent.com/binhex/arch-rtorrentvpn/master/config/nobody/rtorrent/config/rtorrent.rc
+#rtorrentConfig:
+#  rtorrent.rc: |
+#    # This is an example resource file for rTorrent. Copy to
+#    # ~/.rtorrent.rc and enable/modify the options as needed. Remember to
+#    # uncomment the options you wish to enable.

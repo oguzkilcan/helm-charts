@@ -1,0 +1,10 @@
+apiVersion: v2
+name: rtorrent-vpn
+description: A Helm chart for rtorrent-vpn
+type: application
+version: 1.2.0
+appVersion: rtorrent-ps-1.1.r54.ga787dd9-1-31
+sources:
+  - https://hub.docker.com/r/binhex/arch-rtorrentvpn/
+maintainers:
+  - name: oguzkilcan

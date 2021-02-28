@@ -1,0 +1,38 @@
+{{- if .Values.rtorrentConfig }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "rtorrent-vpn.fullname" . }}-rtorrent-rc
+  labels:
+    {{- include "rtorrent-vpn.labels" . | nindent 4 }}
+data:
+{{- with .Values.rtorrentConfig }}
+{{ tpl (toYaml .) $ | indent 2 }}
+{{- end }}
+{{- end }}
+---
+{{- if .Values.extraEnvConfigMap }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "rtorrent-vpn.fullname" . }}
+  labels:
+    {{- include "rtorrent-vpn.labels" . | nindent 4 }}
+data:
+{{- with .Values.extraEnvConfigMap }}
+{{ tpl (toYaml .) $ | indent 2 }}
+{{- end }}
+{{- end }}
+---
+{{- if .Values.customScriptsConfigMap }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.customScriptsConfigMap.name }}
+  labels:
+    {{- include "rtorrent-vpn.labels" . | nindent 4 }}
+data:
+{{- with .Values.customScriptsConfigMap.data }}
+{{ tpl (toYaml .) $ | indent 2 }}
+{{- end }}
+{{- end }}
