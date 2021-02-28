@@ -18,6 +18,23 @@ entries:
     urls:
     - https://github.com/oguzkilcan/helm-charts/releases/download/calibre-web-1.1.4/calibre-web-1.1.4.tgz
     version: 1.1.4
+  plex:
+  - apiVersion: v2
+    appVersion: 1.21.4.4079-1b7748a7b
+    created: "2021-02-28T19:55:54.001889356Z"
+    description: Streaming app for movies, TV, music, web shows and podcasts
+    digest: 84a3dba90370c4961dbbcd40d285a3e1a887b5e148ea0285d8cce3434cff7970
+    home: https://plex.tv/
+    icon: https://cdn.icon-icons.com/icons2/2108/PNG/512/plex_icon_130854.png
+    maintainers:
+    - name: oguzkilcan
+    name: plex
+    sources:
+    - https://hub.docker.com/r/plexinc/pms-docker/
+    type: application
+    urls:
+    - https://github.com/oguzkilcan/helm-charts/releases/download/plex-1.1.4/plex-1.1.4.tgz
+    version: 1.1.4
   teamspeak:
   - apiVersion: v2
     appVersion: 3.13.3
@@ -62,4 +79,4 @@ entries:
     urls:
     - https://github.com/oguzkilcan/helm-charts/releases/download/valheim-0.1.6/valheim-0.1.6.tgz
     version: 0.1.6
-generated: "2021-02-28T19:41:33.797516612Z"
+generated: "2021-02-28T19:55:54.001905358Z"
