@@ -1,0 +1,12 @@
+apiVersion: v2
+type: application
+name: teamspeak
+version: 1.0.1
+appVersion: 3.13.3
+description: VoIP communication system for Online Gaming
+home: https://teamspeak.com
+icon: https://cdn.icon-icons.com/icons2/195/PNG/256/TeamSpeak_23428.png
+sources:
+  - https://hub.docker.com/_/teamspeak
+maintainers:
+  - name: oguzkilcan

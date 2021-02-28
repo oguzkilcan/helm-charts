@@ -1,0 +1,12 @@
+{{- if .Values.extraEnv }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "teamspeak.fullname" . }}
+  labels:
+    {{- include "teamspeak.labels" . | nindent 4 }}
+data:
+{{- with .Values.extraEnv }}
+{{ tpl (toYaml .) $ | indent 2 }}
+{{- end }}
+{{- end }}
