@@ -1,0 +1,38 @@
+apiVersion: v1
+entries:
+  calibre-web:
+  - apiVersion: v2
+    appVersion: 0.6.11-ls107
+    created: "2021-02-28T18:47:19.778653049Z"
+    description: Calibre-Web is a web app providing a clean interface for browsing,
+      reading and downloading eBooks using an existing Calibre database
+    digest: 182656ab64426da00492b3aec0ce4511e50aac53857c8128e4d223d6bc73df38
+    maintainers:
+    - name: oguzkilcan
+    name: calibre-web
+    sources:
+    - https://github.com/janeczku/calibre-web
+    - https://github.com/linuxserver/docker-calibre-web
+    - https://hub.docker.com/r/linuxserver/calibre-web
+    type: application
+    urls:
+    - https://github.com/oguzkilcan/helm-charts/releases/download/calibre-web-1.1.4/calibre-web-1.1.4.tgz
+    version: 1.1.4
+  teamspeak:
+  - apiVersion: v2
+    appVersion: 3.13.3
+    created: "2021-02-28T18:47:19.885876414Z"
+    description: VoIP communication system for Online Gaming
+    digest: 5c8363b025b4e4e9279c0fba26046ade584f5f5aaad54a6956cd137c84b6cacc
+    home: https://teamspeak.com
+    icon: https://cdn.icon-icons.com/icons2/195/PNG/256/TeamSpeak_23428.png
+    maintainers:
+    - name: oguzkilcan
+    name: teamspeak
+    sources:
+    - https://hub.docker.com/_/teamspeak
+    type: application
+    urls:
+    - https://github.com/oguzkilcan/helm-charts/releases/download/teamspeak-1.0.1/teamspeak-1.0.1.tgz
+    version: 1.0.1
+generated: "2021-02-28T18:47:19.885883715Z"
