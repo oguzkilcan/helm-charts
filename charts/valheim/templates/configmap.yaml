@@ -1,0 +1,12 @@
+{{- if .Values.extraEnvConfigMap }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "valheim.fullname" . }}
+  labels:
+    {{- include "valheim.labels" . | nindent 4 }}
+data:
+{{- with .Values.extraEnvConfigMap }}
+{{ tpl (toYaml .) $ | indent 2 }}
+{{- end }}
+{{- end }}
