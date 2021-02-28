@@ -1,7 +1,7 @@
 apiVersion: v2
 type: application
 name: plex
-version: 1.1.4
+version: 1.1.5
 appVersion: 1.21.4.4079-1b7748a7b
 description: Streaming app for movies, TV, music, web shows and podcasts
 home: https://plex.tv/
