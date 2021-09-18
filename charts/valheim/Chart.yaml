@@ -2,7 +2,7 @@ apiVersion: v2
 name: valheim
 description: A brutal exploration and survival game for 1-10 players, set in a procedurally-generated purgatory inspired by viking culture
 type: application
-version: 1.1.0
+version: 1.1.1
 appVersion: "latest"
 maintainers:
   - name: oguzkilcan

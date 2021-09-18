@@ -11,15 +11,15 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - port: 2456
+    - port: {{ .Values.service.port }}
       targetPort: 2456
       name: "2456"
       protocol: UDP
-    - port: 2457
+    - port: {{ add .Values.service.port 1 }}
       targetPort: 2457
       name: "2457"
       protocol: UDP
-    - port: 2458
+    - port: {{ add .Values.service.port 2 }}
       targetPort: 2458
       name: "2458"
       protocol: UDP
