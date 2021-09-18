@@ -85,6 +85,19 @@ entries:
     version: 1.0.1
   valheim:
   - apiVersion: v2
+    appVersion: latest
+    created: "2021-09-18T16:50:27.049211663Z"
+    description: A brutal exploration and survival game for 1-10 players, set in a
+      procedurally-generated purgatory inspired by viking culture
+    digest: f9b91da6d906179bd302d9d6617d65d4d14d88e17316abf9873e471eb494b575
+    maintainers:
+    - name: oguzkilcan
+    name: valheim
+    type: application
+    urls:
+    - https://github.com/oguzkilcan/helm-charts/releases/download/valheim-1.1.0/valheim-1.1.0.tgz
+    version: 1.1.0
+  - apiVersion: v2
     appVersion: main
     created: "2021-02-28T19:41:33.797507112Z"
     description: A brutal exploration and survival game for 1-10 players, set in a
@@ -110,4 +123,4 @@ entries:
     urls:
     - https://github.com/oguzkilcan/helm-charts/releases/download/valheim-0.1.6/valheim-0.1.6.tgz
     version: 0.1.6
-generated: "2021-04-15T16:16:17.17351688Z"
+generated: "2021-09-18T16:50:27.049226863Z"
