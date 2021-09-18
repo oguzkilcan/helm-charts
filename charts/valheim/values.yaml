@@ -35,6 +35,7 @@ securityContext: {}
 
 service:
   type: LoadBalancer
+  port: 2456
 
 
 resources: {}
