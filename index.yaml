@@ -3,6 +3,23 @@ entries:
   calibre-web:
   - apiVersion: v2
     appVersion: 0.6.11-ls107
+    created: "2021-10-29T15:51:25.53197761Z"
+    description: Calibre-Web is a web app providing a clean interface for browsing,
+      reading and downloading eBooks using an existing Calibre database
+    digest: 6450a1bca01e3387c05caf7f4cb8c279b61f508e39ac6c2ca12b157f6a4dca53
+    maintainers:
+    - name: oguzkilcan
+    name: calibre-web
+    sources:
+    - https://github.com/janeczku/calibre-web
+    - https://github.com/linuxserver/docker-calibre-web
+    - https://hub.docker.com/r/linuxserver/calibre-web
+    type: application
+    urls:
+    - https://github.com/oguzkilcan/helm-charts/releases/download/calibre-web-1.2.1/calibre-web-1.2.1.tgz
+    version: 1.2.1
+  - apiVersion: v2
+    appVersion: 0.6.11-ls107
     created: "2021-10-29T15:16:38.927191246Z"
     description: Calibre-Web is a web app providing a clean interface for browsing,
       reading and downloading eBooks using an existing Calibre database
@@ -153,4 +170,4 @@ entries:
     urls:
     - https://github.com/oguzkilcan/helm-charts/releases/download/valheim-0.1.6/valheim-0.1.6.tgz
     version: 0.1.6
-generated: "2021-10-29T15:16:38.927226446Z"
+generated: "2021-10-29T15:51:25.53200071Z"
