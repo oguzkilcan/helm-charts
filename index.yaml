@@ -55,6 +55,22 @@ entries:
   plex:
   - apiVersion: v2
     appVersion: 1.22.2.4282-a97b03fad
+    created: "2021-10-29T16:29:07.696345456Z"
+    description: Streaming app for movies, TV, music, web shows and podcasts
+    digest: 382ad0e24758bba0a1f833af1146fc60da8460d12a546c7cd32dccc806e2973c
+    home: https://plex.tv/
+    icon: https://cdn.icon-icons.com/icons2/2108/PNG/512/plex_icon_130854.png
+    maintainers:
+    - name: oguzkilcan
+    name: plex
+    sources:
+    - https://hub.docker.com/r/plexinc/pms-docker/
+    type: application
+    urls:
+    - https://github.com/oguzkilcan/helm-charts/releases/download/plex-1.2.0/plex-1.2.0.tgz
+    version: 1.2.0
+  - apiVersion: v2
+    appVersion: 1.22.2.4282-a97b03fad
     created: "2021-04-15T16:16:17.17349918Z"
     description: Streaming app for movies, TV, music, web shows and podcasts
     digest: 7669d8eeefc3a8c1f6255ed9341de21dd86191459997f5190ea513c11415af52
@@ -170,4 +186,4 @@ entries:
     urls:
     - https://github.com/oguzkilcan/helm-charts/releases/download/valheim-0.1.6/valheim-0.1.6.tgz
     version: 0.1.6
-generated: "2021-10-29T15:51:25.53200071Z"
+generated: "2021-10-29T16:29:07.696374257Z"
