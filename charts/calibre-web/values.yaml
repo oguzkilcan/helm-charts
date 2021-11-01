@@ -5,8 +5,9 @@
 revisionHistoryLimit: 2
 
 image:
-  repository: linuxserver/calibre-web
+  repository: lscr.io/linuxserver/calibre-web
   pullPolicy: IfNotPresent
+#  tag: latest
 
 imagePullSecrets: []
 nameOverride: ""
