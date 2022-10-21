@@ -69,6 +69,29 @@ entries:
     urls:
     - https://github.com/oguzkilcan/helm-charts/releases/download/calibre-web-1.1.4/calibre-web-1.1.4.tgz
     version: 1.1.4
+  filebrowser:
+  - apiVersion: v2
+    appVersion: v2.22.4
+    created: "2022-10-21T19:22:10.580416299Z"
+    description: A Helm chart for the File Browser project
+    digest: 7b8f6cb9b8ff26f04817fe0c3d48244d625fe75237afd1abbbdf85fa94a8d4d9
+    home: https://filebrowser.org
+    icon: https://raw.githubusercontent.com/filebrowser/logo/master/icon.svg
+    keywords:
+    - filebrowser
+    - file-browser
+    - file-server
+    - http-file-server
+    maintainers:
+    - name: oguzkilcan
+    name: filebrowser
+    sources:
+    - https://github.com/filebrowser/filebrowser
+    - https://github.com/oguzkilcan/helm-charts
+    type: application
+    urls:
+    - https://github.com/oguzkilcan/helm-charts/releases/download/filebrowser-0.1.0/filebrowser-0.1.0.tgz
+    version: 0.1.0
   plex:
   - apiVersion: v2
     appVersion: 1.22.2.4282-a97b03fad
@@ -233,4 +256,4 @@ entries:
     urls:
     - https://github.com/oguzkilcan/helm-charts/releases/download/valheim-0.1.6/valheim-0.1.6.tgz
     version: 0.1.6
-generated: "2021-11-01T09:16:49.750189529Z"
+generated: "2022-10-21T19:22:10.580459599Z"
