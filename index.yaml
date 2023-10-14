@@ -69,6 +69,24 @@ entries:
     urls:
     - https://github.com/oguzkilcan/helm-charts/releases/download/calibre-web-1.1.4/calibre-web-1.1.4.tgz
     version: 1.1.4
+  emby:
+  - apiVersion: v2
+    appVersion: 4.7.14
+    created: "2023-10-14T15:30:34.608448986Z"
+    description: Streaming app for movies, TV, music, web shows and podcasts
+    digest: b054564f1dbcbb31bab470ed615630922cb40a197b4dab8db78d3beb45f9eb22
+    home: https://emby.media/
+    icon: https://cdn.icon-icons.com/icons2/3053/PNG/512/emby_macos_bigsur_icon_190203.png
+    maintainers:
+    - name: oguzkilcan
+    name: emby
+    sources:
+    - https://hub.docker.com/r/linuxserver/emby
+    - https://github.com/linuxserver/docker-emby
+    type: application
+    urls:
+    - https://github.com/oguzkilcan/helm-charts/releases/download/emby-1.0.1/emby-1.0.1.tgz
+    version: 1.0.1
   filebrowser:
   - apiVersion: v2
     appVersion: v2.22.4
@@ -272,4 +290,4 @@ entries:
     urls:
     - https://github.com/oguzkilcan/helm-charts/releases/download/valheim-0.1.6/valheim-0.1.6.tgz
     version: 0.1.6
-generated: "2023-10-14T15:26:05.730428157Z"
+generated: "2023-10-14T15:30:34.60848249Z"
