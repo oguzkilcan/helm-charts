@@ -1,0 +1,25 @@
+{{- if .Values.service.tcp }}
+{{- if .Values.service.tcp.ports }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "emby.fullname" . }}-lb-tcp
+  labels:
+    {{- include "emby.labels" . | nindent 4 }}
+  {{- with .Values.service.tcp.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  type: {{ .Values.service.tcp.type }}
+  ports:
+    {{- range .Values.service.tcp.ports }}
+    - name: emby-{{ .port }}
+      port: {{ .port }}
+      targetPort: {{ .containerPort }}
+      protocol: TCP
+    {{- end }}
+  selector:
+    {{- include "emby.selectorLabels" . | nindent 4 }}
+{{- end }}
+{{- end }}

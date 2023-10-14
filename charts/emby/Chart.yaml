@@ -1,0 +1,13 @@
+apiVersion: v2
+type: application
+name: emby
+version: 1.0.0
+appVersion: 4.7.14
+description: Streaming app for movies, TV, music, web shows and podcasts
+home: https://emby.media/
+icon: https://cdn.icon-icons.com/icons2/3053/PNG/512/emby_macos_bigsur_icon_190203.png
+sources:
+  - https://hub.docker.com/r/linuxserver/emby
+  - https://github.com/linuxserver/docker-emby
+maintainers:
+  - name: oguzkilcan
