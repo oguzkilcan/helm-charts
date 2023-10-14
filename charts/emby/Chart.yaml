@@ -1,7 +1,7 @@
 apiVersion: v2
 type: application
 name: emby
-version: 1.0.0
+version: 1.0.1
 appVersion: 4.7.14
 description: Streaming app for movies, TV, music, web shows and podcasts
 home: https://emby.media/
