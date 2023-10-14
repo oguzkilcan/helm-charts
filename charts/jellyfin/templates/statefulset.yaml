@@ -1,0 +1,155 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "jellyfin.fullname" . }}
+  labels:
+    {{- include "jellyfin.labels" . | nindent 4 }}
+spec:
+  serviceName: {{ include "jellyfin.fullname" . }}
+  replicas: 1
+  updateStrategy:
+    type: RollingUpdate
+  revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
+  selector:
+    matchLabels:
+      {{- include "jellyfin.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "jellyfin.selectorLabels" . | nindent 8 }}
+      {{- if .Values.extraEnv }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+      {{- end }}
+    spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      serviceAccountName: {{ include "jellyfin.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- if .Values.extraEnv }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "jellyfin.fullname" . }}
+          {{- end }}
+          ports:
+            - containerPort: 32400
+              protocol: TCP
+            {{- if .Values.service.tcp }}
+            {{- if .Values.service.tcp.ports }}
+            {{- range .Values.service.tcp.ports }}
+            - containerPort: {{ .containerPort }}
+              protocol: TCP
+            {{- end }}
+            {{- end }}
+            {{- end }}
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8096
+            initialDelaySeconds: 30
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8096
+            initialDelaySeconds: 60
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - mountPath: /transcode
+              name: transcode
+            - mountPath: /config
+              name: config
+            - mountPath: /data
+              name: data
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
+      volumes:
+        - name: data
+        {{- if and .Values.persistence.data.enabled .Values.persistence.data.existingClaim }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.data.existingClaim }}
+        {{- else }}
+          emptyDir: {}
+        {{- end }}
+        - name: config
+        {{- if and .Values.persistence.config.enabled .Values.persistence.config.existingClaim }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.config.existingClaim }}
+        {{- else  }}
+          emptyDir: {}
+        {{- end }}
+        - name: transcode
+          emptyDir: {}
+{{- if or (and .Values.persistence.data.enabled (not .Values.persistence.data.existingClaim)) (and .Values.persistence.config.enabled (not .Values.persistence.config.existingClaim)) }}
+  volumeClaimTemplates:
+  {{- if and .Values.persistence.data.enabled (not .Values.persistence.data.existingClaim) }}
+    - metadata:
+        name: data
+      {{- with .Values.persistence.data.annotations }}
+        annotations:
+        {{- range $key, $value := . }}
+          {{ $key }}: {{ $value }}
+        {{- end }}
+      {{- end }}
+      spec:
+        accessModes:
+        {{- range .Values.persistence.data.accessModes }}
+          - {{ . | quote }}
+        {{- end }}
+        resources:
+          requests:
+            storage: {{ .Values.persistence.data.size | quote }}
+      {{- if .Values.persistence.data.storageClass }}
+      {{- if (eq "-" .Values.persistence.data.storageClass) }}
+        storageClassName: ""
+      {{- else }}
+        storageClassName: "{{ .Values.persistence.data.storageClass }}"
+      {{- end }}
+      {{- end }}
+  {{- end }}
+  {{- if and .Values.persistence.config.enabled (not .Values.persistence.config.existingClaim) }}
+    - metadata:
+        name: config
+      {{- with .Values.persistence.config.annotations }}
+        annotations:
+        {{- range $key, $value := . }}
+          {{ $key }}: {{ $value }}
+        {{- end }}
+      {{- end }}
+      spec:
+        accessModes:
+        {{- range .Values.persistence.config.accessModes }}
+          - {{ . | quote }}
+        {{- end }}
+        resources:
+          requests:
+            storage: {{ .Values.persistence.config.size | quote }}
+      {{- if .Values.persistence.config.storageClass }}
+      {{- if (eq "-" .Values.persistence.config.storageClass) }}
+        storageClassName: ""
+      {{- else }}
+        storageClassName: "{{ .Values.persistence.config.storageClass }}"
+      {{- end }}
+      {{- end }}
+  {{- end }}
+{{- end }}

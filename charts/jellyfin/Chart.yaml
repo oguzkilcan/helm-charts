@@ -1,0 +1,13 @@
+apiVersion: v2
+type: application
+name: jellyfin
+version: 1.0.0
+appVersion: 10.8.11
+description: Streaming app for movies, TV, music, web shows and podcasts
+home: https://jellyfin.org/
+icon: https://cdn.icon-icons.com/icons2/3912/PNG/512/jellyfin_logo_icon_247973.png
+sources:
+  - https://github.com/jellyfin/jellyfin
+  - https://hub.docker.com/r/linuxserver/jellyfin
+maintainers:
+  - name: oguzkilcan
