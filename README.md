@@ -2,7 +2,7 @@
 
 Simply run:
 ```bash
-$ helm repo add oguz-charts https://charts.oguz.io
+$ helm repo add oguz-charts https://charts.oguz.pw
 ```
 and start browsing them:
 ```bash
