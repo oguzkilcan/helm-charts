@@ -53,12 +53,12 @@ spec:
             {{- end }}
           readinessProbe:
             httpGet:
-              path: /
+              path: /health
               port: 8096
             initialDelaySeconds: 30
           livenessProbe:
             httpGet:
-              path: /
+              path: /health
               port: 8096
             initialDelaySeconds: 60
           resources:
