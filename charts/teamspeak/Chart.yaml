@@ -1,8 +1,8 @@
 apiVersion: v2
 type: application
 name: teamspeak
-version: 1.0.1
-appVersion: 3.13.3
+version: 1.0.2
+appVersion: 3.13.7
 description: VoIP communication system for Online Gaming
 home: https://teamspeak.com
 icon: https://cdn.icon-icons.com/icons2/195/PNG/256/TeamSpeak_23428.png
