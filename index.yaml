@@ -113,6 +113,23 @@ entries:
   jellyfin:
   - apiVersion: v2
     appVersion: 10.8.11
+    created: "2023-10-14T23:02:20.471728157Z"
+    description: Streaming app for movies, TV, music, web shows and podcasts
+    digest: 15aac7bd4246da9577d27609239bbcc2ea025d576b71ba2c7d694462328b23ce
+    home: https://jellyfin.org/
+    icon: https://cdn.icon-icons.com/icons2/3912/PNG/512/jellyfin_logo_icon_247973.png
+    maintainers:
+    - name: oguzkilcan
+    name: jellyfin
+    sources:
+    - https://github.com/jellyfin/jellyfin
+    - https://hub.docker.com/r/linuxserver/jellyfin
+    type: application
+    urls:
+    - https://github.com/oguzkilcan/helm-charts/releases/download/jellyfin-1.0.1/jellyfin-1.0.1.tgz
+    version: 1.0.1
+  - apiVersion: v2
+    appVersion: 10.8.11
     created: "2023-10-14T22:57:12.668907493Z"
     description: Streaming app for movies, TV, music, web shows and podcasts
     digest: 509b74641bdcb7bf731c686878cd8038d21099f32cd9277200d4bf87c0b0b243
@@ -308,4 +325,4 @@ entries:
     urls:
     - https://github.com/oguzkilcan/helm-charts/releases/download/valheim-0.1.6/valheim-0.1.6.tgz
     version: 0.1.6
-generated: "2023-10-14T22:57:12.669013094Z"
+generated: "2023-10-14T23:02:20.471751858Z"
