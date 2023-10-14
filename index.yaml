@@ -188,6 +188,22 @@ entries:
     version: 1.2.0
   teamspeak:
   - apiVersion: v2
+    appVersion: 3.13.7
+    created: "2023-10-14T15:26:05.730404656Z"
+    description: VoIP communication system for Online Gaming
+    digest: c1451810a87bd5b39c54e7a32f08e397a466171309fe261cc0356947fbf415a4
+    home: https://teamspeak.com
+    icon: https://cdn.icon-icons.com/icons2/195/PNG/256/TeamSpeak_23428.png
+    maintainers:
+    - name: oguzkilcan
+    name: teamspeak
+    sources:
+    - https://hub.docker.com/_/teamspeak
+    type: application
+    urls:
+    - https://github.com/oguzkilcan/helm-charts/releases/download/teamspeak-1.0.2/teamspeak-1.0.2.tgz
+    version: 1.0.2
+  - apiVersion: v2
     appVersion: 3.13.3
     created: "2021-02-28T18:47:19.885876414Z"
     description: VoIP communication system for Online Gaming
@@ -256,4 +272,4 @@ entries:
     urls:
     - https://github.com/oguzkilcan/helm-charts/releases/download/valheim-0.1.6/valheim-0.1.6.tgz
     version: 0.1.6
-generated: "2022-10-21T19:22:10.580459599Z"
+generated: "2023-10-14T15:26:05.730428157Z"
