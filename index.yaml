@@ -145,6 +145,21 @@ entries:
     urls:
     - https://github.com/oguzkilcan/helm-charts/releases/download/jellyfin-1.0.0/jellyfin-1.0.0.tgz
     version: 1.0.0
+  palworld:
+  - apiVersion: v2
+    appVersion: latest
+    created: "2024-01-28T09:46:52.348265415Z"
+    description: Palworld is a monster-catching, survival and crafting game, but incorporates
+      a variety of mechanics from other genres in order to provide a completely new
+      experience for everyone.
+    digest: 726b051a8626fa776cf6adb5a78cfaf4ed04b8878665742765dcd78ad1e0585b
+    maintainers:
+    - name: oguzkilcan
+    name: palworld
+    type: application
+    urls:
+    - https://github.com/oguzkilcan/helm-charts/releases/download/palworld-1.0.0/palworld-1.0.0.tgz
+    version: 1.0.0
   plex:
   - apiVersion: v2
     appVersion: 1.22.2.4282-a97b03fad
@@ -325,4 +340,4 @@ entries:
     urls:
     - https://github.com/oguzkilcan/helm-charts/releases/download/valheim-0.1.6/valheim-0.1.6.tgz
     version: 0.1.6
-generated: "2023-10-14T23:02:20.471751858Z"
+generated: "2024-01-28T09:46:52.348298717Z"
