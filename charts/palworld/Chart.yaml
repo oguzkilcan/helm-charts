@@ -1,0 +1,8 @@
+apiVersion: v2
+name: palworld
+description: Palworld is a monster-catching, survival and crafting game, but incorporates a variety of mechanics from other genres in order to provide a completely new experience for everyone.
+type: application
+version: 1.0.0
+appVersion: "latest"
+maintainers:
+  - name: oguzkilcan
