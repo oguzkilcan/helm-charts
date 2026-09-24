@@ -287,6 +287,23 @@ entries:
     urls:
     - https://github.com/oguzkilcan/helm-charts/releases/download/teamspeak-1.0.1/teamspeak-1.0.1.tgz
     version: 1.0.1
+  teamspeak6:
+  - apiVersion: v2
+    appVersion: 6.0.0-beta13.1
+    created: "2026-09-24T14:23:12.336832574Z"
+    description: TeamSpeak 6 server, VoIP communication system for online gaming
+    digest: 459e034e4e5995bf089193c5cb7ad006a483bb0848d73b655f0bf5a1d08c9902
+    home: https://teamspeak.com
+    icon: https://cdn.icon-icons.com/icons2/195/PNG/256/TeamSpeak_23428.png
+    maintainers:
+    - name: oguzkilcan
+    name: teamspeak6
+    sources:
+    - https://github.com/teamspeak/teamspeak6-server
+    type: application
+    urls:
+    - https://github.com/oguzkilcan/helm-charts/releases/download/teamspeak6-1.0.0/teamspeak6-1.0.0.tgz
+    version: 1.0.0
   valheim:
   - apiVersion: v2
     appVersion: latest
@@ -340,4 +357,4 @@ entries:
     urls:
     - https://github.com/oguzkilcan/helm-charts/releases/download/valheim-0.1.6/valheim-0.1.6.tgz
     version: 0.1.6
-generated: "2024-01-28T09:46:52.348298717Z"
+generated: "2026-09-24T14:23:12.336859828Z"
