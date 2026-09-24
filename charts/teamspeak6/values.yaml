@@ -1,0 +1,73 @@
+# Default values for teamspeak6.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+image:
+  repository: teamspeaksystems/teamspeak6-server
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  #  tag:
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+revisionHistoryLimit: 2
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podSecurityContext:
+  # The image runs as the teamspeak user (UID/GID 9987).
+  fsGroup: 9987
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: LoadBalancer
+  voicePort: 9987
+  annotations: {}
+
+resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+terminationGracePeriodSeconds: 30
+
+persistence:
+  enabled: false
+  accessModes:
+    - ReadWriteOnce
+  size: 1Gi
+  annotations: {}
+  # existingClaim:
+  # storageClass: "-"
+
+# See https://github.com/teamspeak/teamspeak6-server/blob/main/CONFIG.md for the supported variables.
+extraEnvSecret: {}
+  # TSSERVER_QUERY_ADMIN_PASSWORD: changeme
+
+extraEnvConfigMap:
+  TSSERVER_LICENSE_ACCEPTED: accept

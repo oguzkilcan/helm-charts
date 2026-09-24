@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "teamspeak6.fullname" . }}
+  labels:
+    {{- include "teamspeak6.labels" . | nindent 4 }}
+  {{- with .Values.service.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.voicePort }}
+      targetPort: voice
+      protocol: UDP
+      name: voice
+    # clients connect to the advertised file transfer port, so it must match the container port
+    - port: 30033
+      targetPort: filetransfer
+      protocol: TCP
+      name: filetransfer
+  selector:
+    {{- include "teamspeak6.selectorLabels" . | nindent 4 }}

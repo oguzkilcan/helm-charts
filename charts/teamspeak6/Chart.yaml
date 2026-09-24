@@ -1,0 +1,12 @@
+apiVersion: v2
+type: application
+name: teamspeak6
+version: 1.0.0
+appVersion: "6.0.0-beta13.1"
+description: TeamSpeak 6 server, VoIP communication system for online gaming
+home: https://teamspeak.com
+icon: https://cdn.icon-icons.com/icons2/195/PNG/256/TeamSpeak_23428.png
+sources:
+  - https://github.com/teamspeak/teamspeak6-server
+maintainers:
+  - name: oguzkilcan

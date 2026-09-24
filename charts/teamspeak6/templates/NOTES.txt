@@ -1,0 +1,9 @@
+1. Get the server address by running these commands:
+{{- if contains "LoadBalancer" .Values.service.type }}
+     NOTE: It may take a few minutes for the LoadBalancer IP to be available.
+           You can watch the status of by running 'kubectl get --namespace {{ .Release.Namespace }} svc -w {{ include "teamspeak6.fullname" . }}'
+  export SERVICE_IP=$(kubectl get svc --namespace {{ .Release.Namespace }} {{ include "teamspeak6.fullname" . }} --template "{{"{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"}}")
+  echo $SERVICE_IP:{{ .Values.service.voicePort }}
+{{- end }}
+2. The serveradmin privilege key is printed to the logs on the first start:
+  kubectl logs --namespace {{ .Release.Namespace }} {{ include "teamspeak6.fullname" . }}-0
