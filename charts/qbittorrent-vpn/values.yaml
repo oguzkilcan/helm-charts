@@ -1,0 +1,169 @@
+# Default values for qbittorrent-vpn.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+revisionHistoryLimit: 2
+
+image:
+  repository: linuxserver/qbittorrent
+  pullPolicy: IfNotPresent
+  #  tag:
+
+initContainerImage:
+  repository: busybox
+  tag: 1.37.0
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name:
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: false
+  # For Kubernetes >= 1.18 you should specify the ingress-controller via the field ingressClassName
+  # See https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/#specifying-the-class-of-an-ingress
+  # ingressClassName: nginx
+  # Values can be templated
+  annotations: {}
+  # kubernetes.io/ingress.class: nginx
+  # kubernetes.io/tls-acme: "true"
+  labels: {}
+  path: /
+
+  # pathType is only for k8s >= 1.1=
+  pathType: Prefix
+
+  hosts:
+    - chart-example.local
+
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+terminationGracePeriodSeconds: 30
+
+persistence:
+  data:
+    enabled: false
+    accessModes:
+      - ReadWriteOnce
+    size: 8Gi
+    annotations: {}
+    # existingClaim:
+    # storageClass: "-"
+  config:
+    enabled: false
+    accessModes:
+      - ReadWriteOnce
+    size: 8Gi
+    annotations: {}
+    # existingClaim:
+    # storageClass: "-"
+
+## Environment of the qBittorrent container.
+extraEnvConfigMap: {}
+#  PUID: "1000"
+#  PGID: "1000"
+#  TZ: Europe/Berlin
+
+extraEnvSecret: {}
+
+gluetun:
+  image:
+    repository: qmcgaw/gluetun
+    tag: v3.41.3
+    pullPolicy: IfNotPresent
+  resources: {}
+  ## Environment of the gluetun container, see https://github.com/qdm12/gluetun-wiki.
+  ## FIREWALL_INPUT_PORTS must contain 8080 for the WebUI to be reachable, and 8888 when httpProxy is enabled.
+  env: {}
+  #  VPN_SERVICE_PROVIDER: airvpn
+  #  VPN_TYPE: wireguard
+  #  SERVER_COUNTRIES: Netherlands
+  #  FIREWALL_INPUT_PORTS: "8080"
+  #  FIREWALL_VPN_INPUT_PORTS: "12345"
+  #  FIREWALL_OUTBOUND_SUBNETS: 10.42.0.0/16,10.43.0.0/16
+  envSecret: {}
+  #  WIREGUARD_PRIVATE_KEY: ...
+  #  WIREGUARD_PRESHARED_KEY: ...
+  #  WIREGUARD_ADDRESSES: 10.x.x.x/32
+
+## Exposes the gluetun HTTP proxy. Requires HTTPPROXY=on in gluetun.env.
+httpProxy:
+  enabled: false
+  service:
+    type: LoadBalancer
+    port: 8888
+    annotations: {}
+
+## Allows egress only to the VPN server IPs on the WireGuard port, so nothing leaves the pod outside the tunnel.
+## ips must contain every server gluetun can select, e.g., for AirVPN servers in the Netherlands:
+## curl -s https://airvpn.org/api/status/ | jq -r '.servers[] | select(.country_code == "nl") | .ip_v4_in1'
+networkPolicy:
+  enabled: false
+  port: 1637
+  ips: []
+
+## Add custom scripts as configMap
+customScriptsConfigMap: {}
+#  name: custom-script
+#  data:
+#    script.sh: |
+#      #!/bin/bash
+#      echo "Custom script"
+
+## Add custom volumes
+customVolumes: |
+#  - name: custom-script
+#    configMap:
+#      name: custom-script
+#      items:
+#        - key: script.sh
+#          path: script.sh
+
+## Add custom volumesMounts
+customVolumeMounts: |
+#  - name: custom-script
+#    mountPath: "/scripts/script.sh"
+#    subPath: script.sh
+
+## qBittorrent config files, copied into /config/qBittorrent on every start.
+## Changes made on the WebUI are overwritten on the next start.
+## Defaults to https://github.com/linuxserver/docker-qbittorrent/blob/master/root/defaults/qBittorrent.conf
+qbittorrentConfig: {}
+#  qBittorrent.conf: |
+#    [BitTorrent]
+#    Session\Interface=tun0
+#    Session\InterfaceName=tun0
+#    Session\Port=12345
+#  categories.json: |
+#    {"movie": {"save_path": "/data/completed/movie"}}

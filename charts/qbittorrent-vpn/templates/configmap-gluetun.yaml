@@ -1,0 +1,12 @@
+{{- if .Values.gluetun.env }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "qbittorrent-vpn.fullname" . }}-gluetun
+  labels:
+    {{- include "qbittorrent-vpn.labels" . | nindent 4 }}
+data:
+{{- with .Values.gluetun.env }}
+{{ tpl (toYaml .) $ | indent 2 }}
+{{- end }}
+{{- end }}

@@ -1,0 +1,230 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "qbittorrent-vpn.fullname" . }}
+  labels:
+    {{- include "qbittorrent-vpn.labels" . | nindent 4 }}
+spec:
+  serviceName: {{ include "qbittorrent-vpn.fullname" . }}
+  replicas: 1
+  updateStrategy:
+    type: RollingUpdate
+  revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
+  selector:
+    matchLabels:
+      {{- include "qbittorrent-vpn.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "qbittorrent-vpn.selectorLabels" . | nindent 8 }}
+      annotations:
+        checksum/config: {{ print (include (print $.Template.BasePath "/configmap.yaml") .) (include (print $.Template.BasePath "/configmap-gluetun.yaml") .) (include (print $.Template.BasePath "/configmap-qbittorrent.yaml") .) (include (print $.Template.BasePath "/configmap-custom.yaml") .) | sha256sum }}
+        checksum/secret: {{ print (include (print $.Template.BasePath "/secret.yaml") .) (include (print $.Template.BasePath "/secret-gluetun.yaml") .) | sha256sum }}
+    spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      serviceAccountName: {{ include "qbittorrent-vpn.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      # resolves through the gluetun DNS server, so that DNS queries never leave the tunnel
+      dnsPolicy: None
+      dnsConfig:
+        nameservers:
+          - 127.0.0.1
+      initContainers:
+        {{- if .Values.qbittorrentConfig }}
+        - name: init-ops
+          image: "{{ .Values.initContainerImage.repository }}:{{ .Values.initContainerImage.tag }}"
+          imagePullPolicy: {{ .Values.initContainerImage.pullPolicy }}
+          command:
+            - "/bin/sh"
+            - "-c"
+            - |-
+              set -e
+              mkdir -p /config/qBittorrent
+              cp -L /tmp/qbittorrent/* /config/qBittorrent/
+          volumeMounts:
+            - mountPath: /tmp/qbittorrent
+              name: qbittorrent-config-temp
+            - mountPath: /config
+              name: config
+        {{- end }}
+        # native sidecar, so that qBittorrent starts only after the gluetun firewall is up
+        - name: gluetun
+          image: "{{ .Values.gluetun.image.repository }}:{{ .Values.gluetun.image.tag }}"
+          imagePullPolicy: {{ .Values.gluetun.image.pullPolicy }}
+          restartPolicy: Always
+          securityContext:
+            capabilities:
+              add:
+                - NET_ADMIN
+          {{- if or .Values.gluetun.env .Values.gluetun.envSecret }}
+          envFrom:
+            {{- if .Values.gluetun.env }}
+            - configMapRef:
+                name: {{ include "qbittorrent-vpn.fullname" . }}-gluetun
+            {{- end }}
+            {{- if .Values.gluetun.envSecret }}
+            - secretRef:
+                name: {{ include "qbittorrent-vpn.fullname" . }}-gluetun
+            {{- end }}
+          {{- end }}
+          {{- if .Values.httpProxy.enabled }}
+          ports:
+            - name: http-proxy
+              containerPort: 8888
+          {{- end }}
+          lifecycle:
+            postStart:
+              exec:
+                # ip rules outlive a gluetun restart within the same pod, see https://github.com/qdm12/gluetun/issues/2521
+                command: ["/bin/sh", "-c", "(ip rule del table 51820; ip -6 rule del table 51820) || true"]
+          startupProbe:
+            exec:
+              command:
+                - /gluetun-entrypoint
+                - healthcheck
+            periodSeconds: 5
+            failureThreshold: 60
+          resources:
+            {{- toYaml .Values.gluetun.resources | nindent 12 }}
+          volumeMounts:
+            - mountPath: /dev/net/tun
+              name: dev-net-tun
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- if or .Values.extraEnvConfigMap .Values.extraEnvSecret }}
+          envFrom:
+            {{- if .Values.extraEnvConfigMap }}
+            - configMapRef:
+                name: {{ include "qbittorrent-vpn.fullname" . }}
+            {{- end }}
+            {{- if .Values.extraEnvSecret }}
+            - secretRef:
+                name: {{ include "qbittorrent-vpn.fullname" . }}
+            {{- end }}
+          {{- end }}
+          ports:
+            - name: http
+              containerPort: 8080
+          readinessProbe:
+            exec:
+              command:
+                - pgrep
+                - qbittorrent-nox
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            exec:
+              command:
+                - pgrep
+                - qbittorrent-nox
+            initialDelaySeconds: 60
+            periodSeconds: 10
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - mountPath: /config
+              name: config
+            - mountPath: /data
+              name: data
+          {{- if .Values.customVolumeMounts }}
+{{ tpl .Values.customVolumeMounts . | indent 12 }}
+          {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
+      volumes:
+        {{- if .Values.customVolumes }}
+{{ tpl .Values.customVolumes . | indent 8 }}
+        {{- end }}
+        {{- if .Values.qbittorrentConfig }}
+        - name: qbittorrent-config-temp
+          configMap:
+            name: {{ include "qbittorrent-vpn.fullname" . }}-qbittorrent
+        {{- end }}
+        - name: dev-net-tun
+          hostPath:
+            type: CharDevice
+            path: /dev/net/tun
+        - name: data
+        {{- if and .Values.persistence.data.enabled .Values.persistence.data.existingClaim }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.data.existingClaim }}
+        {{- else if not .Values.persistence.data.enabled }}
+          emptyDir: {}
+        {{- end }}
+        - name: config
+        {{- if and .Values.persistence.config.enabled .Values.persistence.config.existingClaim }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.config.existingClaim }}
+        {{- else if not .Values.persistence.config.enabled }}
+          emptyDir: {}
+        {{- end }}
+{{- if or (and .Values.persistence.data.enabled (not .Values.persistence.data.existingClaim)) (and .Values.persistence.config.enabled (not .Values.persistence.config.existingClaim)) }}
+  volumeClaimTemplates:
+  {{- if and .Values.persistence.data.enabled (not .Values.persistence.data.existingClaim) }}
+    - metadata:
+        name: data
+      {{- with .Values.persistence.data.annotations }}
+        annotations:
+        {{- range $key, $value := . }}
+          {{ $key }}: {{ $value }}
+        {{- end }}
+      {{- end }}
+      spec:
+        accessModes:
+        {{- range .Values.persistence.data.accessModes }}
+          - {{ . | quote }}
+        {{- end }}
+        resources:
+          requests:
+            storage: {{ .Values.persistence.data.size | quote }}
+      {{- if .Values.persistence.data.storageClass }}
+      {{- if (eq "-" .Values.persistence.data.storageClass) }}
+        storageClassName: ""
+      {{- else }}
+        storageClassName: "{{ .Values.persistence.data.storageClass }}"
+      {{- end }}
+      {{- end }}
+  {{- end }}
+  {{- if and .Values.persistence.config.enabled (not .Values.persistence.config.existingClaim) }}
+    - metadata:
+        name: config
+      {{- with .Values.persistence.config.annotations }}
+        annotations:
+        {{- range $key, $value := . }}
+          {{ $key }}: {{ $value }}
+        {{- end }}
+      {{- end }}
+      spec:
+        accessModes:
+        {{- range .Values.persistence.config.accessModes }}
+          - {{ . | quote }}
+        {{- end }}
+        resources:
+          requests:
+            storage: {{ .Values.persistence.config.size | quote }}
+      {{- if .Values.persistence.config.storageClass }}
+      {{- if (eq "-" .Values.persistence.config.storageClass) }}
+        storageClassName: ""
+      {{- else }}
+        storageClassName: "{{ .Values.persistence.config.storageClass }}"
+      {{- end }}
+      {{- end }}
+  {{- end }}
+{{- end }}

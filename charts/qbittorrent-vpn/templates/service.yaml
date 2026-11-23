@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "qbittorrent-vpn.fullname" . }}
+  labels:
+    {{- include "qbittorrent-vpn.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "qbittorrent-vpn.selectorLabels" . | nindent 4 }}
+---
+{{- if .Values.httpProxy.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "qbittorrent-vpn.fullname" . }}-http-proxy
+  labels:
+    {{- include "qbittorrent-vpn.labels" . | nindent 4 }}
+  {{- with .Values.httpProxy.service.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  type: {{ .Values.httpProxy.service.type }}
+  ports:
+    - port: {{ .Values.httpProxy.service.port }}
+      targetPort: http-proxy
+      protocol: TCP
+      name: http-proxy
+  selector:
+    {{- include "qbittorrent-vpn.selectorLabels" . | nindent 4 }}
+{{- end }}
