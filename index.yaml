@@ -225,6 +225,22 @@ entries:
     urls:
     - https://github.com/oguzkilcan/helm-charts/releases/download/plex-1.1.5/plex-1.1.5.tgz
     version: 1.1.5
+  qbittorrent-vpn:
+  - apiVersion: v2
+    appVersion: 5.3.0_v2.1.2-ls488
+    created: "2026-11-23T20:12:35.151455889Z"
+    description: A Helm chart for qBittorrent with a gluetun VPN sidecar
+    digest: 0ef33cc0c715d3204dc3a7893b47f6fe2eed1f7f773b83513eba7e71e542bab3
+    maintainers:
+    - name: oguzkilcan
+    name: qbittorrent-vpn
+    sources:
+    - https://github.com/linuxserver/docker-qbittorrent
+    - https://github.com/qdm12/gluetun
+    type: application
+    urls:
+    - https://github.com/oguzkilcan/helm-charts/releases/download/qbittorrent-vpn-0.1.0/qbittorrent-vpn-0.1.0.tgz
+    version: 0.1.0
   rtorrent-vpn:
   - apiVersion: v2
     appVersion: rtorrent-ps-1.1.r54.ga787dd9-1-31
@@ -357,4 +373,4 @@ entries:
     urls:
     - https://github.com/oguzkilcan/helm-charts/releases/download/valheim-0.1.6/valheim-0.1.6.tgz
     version: 0.1.6
-generated: "2026-09-24T14:23:12.336859828Z"
+generated: "2026-11-23T20:12:35.151495897Z"
