@@ -51,18 +51,17 @@ spec:
             - mountPath: /config
               name: config
         {{- end }}
-        # gluetun selects IPv6 servers when any IPv6 route exists, even the link-local one on an IPv4-only pod
-        - name: remove-ipv6-link-local-route
+        # gluetun selects IPv6 servers when any IPv6 route exists, even the link-local one on an IPv4-only pod.
+        # Privileged only to write /proc/sys, the setting applies to the pod network namespace.
+        - name: disable-ipv6
           image: "{{ .Values.initContainerImage.repository }}:{{ .Values.initContainerImage.tag }}"
           imagePullPolicy: {{ .Values.initContainerImage.pullPolicy }}
           securityContext:
-            capabilities:
-              add:
-                - NET_ADMIN
+            privileged: true
           command:
             - "/bin/sh"
             - "-c"
-            - "ip -6 route del fe80::/64 dev eth0 || true"
+            - "sysctl -w net.ipv6.conf.all.disable_ipv6=1 net.ipv6.conf.default.disable_ipv6=1"
         # native sidecar, so that qBittorrent starts only after the gluetun firewall is up
         - name: gluetun
           image: "{{ .Values.gluetun.image.repository }}:{{ .Values.gluetun.image.tag }}"
