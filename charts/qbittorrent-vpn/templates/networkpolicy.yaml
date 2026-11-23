@@ -14,6 +14,9 @@ spec:
       {{- include "qbittorrent-vpn.selectorLabels" . | nindent 6 }}
   policyTypes:
     - Egress
+    {{- if .Values.networkPolicy.ingressFrom }}
+    - Ingress
+    {{- end }}
   egress:
     - to:
         {{- range .Values.networkPolicy.ips }}
@@ -23,4 +26,12 @@ spec:
       ports:
         - protocol: UDP
           port: {{ .Values.networkPolicy.port }}
+  {{- with .Values.networkPolicy.ingressFrom }}
+  ingress:
+    - from:
+        {{- toYaml . | nindent 8 }}
+      ports:
+        - protocol: TCP
+          port: 8080
+  {{- end }}
 {{- end }}

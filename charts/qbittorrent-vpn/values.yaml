@@ -132,6 +132,14 @@ networkPolicy:
   enabled: false
   port: 1637
   ips: []
+  ## Peers allowed to reach the WebUI. Leave empty to not restrict ingress.
+  ingressFrom: []
+  #  - namespaceSelector:
+  #      matchLabels:
+  #        kubernetes.io/metadata.name: ingress-nginx
+  #    podSelector:
+  #      matchLabels:
+  #        app.kubernetes.io/name: ingress-nginx
 
 ## Mounts files/unpack.sh at /scripts/unpack.sh. Run it on torrent completion with qbittorrentConfig, e.g.:
 ## [AutoRun]
