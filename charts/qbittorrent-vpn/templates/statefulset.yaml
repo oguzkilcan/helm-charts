@@ -18,7 +18,7 @@ spec:
       labels:
         {{- include "qbittorrent-vpn.selectorLabels" . | nindent 8 }}
       annotations:
-        checksum/config: {{ print (include (print $.Template.BasePath "/configmap.yaml") .) (include (print $.Template.BasePath "/configmap-gluetun.yaml") .) (include (print $.Template.BasePath "/configmap-qbittorrent.yaml") .) (include (print $.Template.BasePath "/configmap-custom.yaml") .) | sha256sum }}
+        checksum/config: {{ print (include (print $.Template.BasePath "/configmap.yaml") .) (include (print $.Template.BasePath "/configmap-gluetun.yaml") .) (include (print $.Template.BasePath "/configmap-qbittorrent.yaml") .) (include (print $.Template.BasePath "/configmap-custom.yaml") .) (include (print $.Template.BasePath "/configmap-unpack.yaml") .) | sha256sum }}
         checksum/secret: {{ print (include (print $.Template.BasePath "/secret.yaml") .) (include (print $.Template.BasePath "/secret-gluetun.yaml") .) | sha256sum }}
     spec:
     {{- with .Values.imagePullSecrets }}
@@ -132,6 +132,11 @@ spec:
               name: config
             - mountPath: /data
               name: data
+            {{- if .Values.unpack.enabled }}
+            - mountPath: /scripts/unpack.sh
+              name: unpack-script
+              subPath: unpack.sh
+            {{- end }}
           {{- if .Values.customVolumeMounts }}
 {{ tpl .Values.customVolumeMounts . | indent 12 }}
           {{- end }}
@@ -156,6 +161,12 @@ spec:
         - name: qbittorrent-config-temp
           configMap:
             name: {{ include "qbittorrent-vpn.fullname" . }}-qbittorrent
+        {{- end }}
+        {{- if .Values.unpack.enabled }}
+        - name: unpack-script
+          configMap:
+            name: {{ include "qbittorrent-vpn.fullname" . }}-unpack
+            defaultMode: 0755
         {{- end }}
         - name: dev-net-tun
           hostPath:

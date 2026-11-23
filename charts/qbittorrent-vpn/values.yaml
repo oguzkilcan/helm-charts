@@ -133,6 +133,13 @@ networkPolicy:
   port: 1637
   ips: []
 
+## Mounts files/unpack.sh at /scripts/unpack.sh. Run it on torrent completion with qbittorrentConfig, e.g.:
+## [AutoRun]
+## enabled=true
+## program=/scripts/unpack.sh \"%F\" \"/data/completed/unpack/%L/%N\"
+unpack:
+  enabled: false
+
 ## Add custom scripts as configMap
 customScriptsConfigMap: {}
 #  name: custom-script
